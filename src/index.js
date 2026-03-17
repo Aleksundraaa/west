@@ -31,15 +31,16 @@ class Creature extends Card {
     constructor(name, power) {
         super(name, power);
     }
-    getDescriptions(){
+
+    getDescriptions() {
         const creatureDescription = getCreatureDescription(this);
         const cardDescription = super.getDescriptions();
         return [creatureDescription, ...cardDescription];
-   }
+    }
 }
 
 class Duck extends Creature {
-    constructor(){
+    constructor() {
         super('Мирная утка', 2);
     };
 
@@ -50,6 +51,18 @@ class Duck extends Creature {
     swims() {
         console.log('float: both;');
     };
+
+}
+
+class Trasher extends Dog {
+    constructor() {
+        super("Громила", 5);
+    }
+
+    modifyTakenDamage(damage) {
+        const newDamage = damage - 1;
+
+    }
 
 }
 
