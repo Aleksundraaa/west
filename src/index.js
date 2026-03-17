@@ -80,6 +80,57 @@ class Trasher extends Dog {
 
 }
 
+class Lad extends Dog {
+    constructor() {
+        super('Браток', 2);
+    };
+    static getInGameCount() {
+        return this.inGameCount || 0;
+    };
+    static setInGameCount(value){
+        this.inGameCount = value;
+    };
+
+    static getBonus() {
+        const count = this.getInGameCount();
+        return (count + 1) * count / 2;
+    };
+
+    doAfterComingIntoPlay(gameContext, continuation) {
+        const currentCount = Led.getInGameCount();
+        Led.setInGameCount(currentCount + 1);
+        continuation();
+
+    };
+    doBeforeRemoving(continuation) {
+        const currentCount = Led.getInGameCount();
+        Led.setInGameCount(currentCount - 1);
+        continuation();
+    };
+
+    modifyDealedDamageToCreature(value, toCard, gameContext, continuation) {
+        const bonus = Led.getBonus();
+        continuation(value + bonus);
+    };
+
+    modifyTakenDamage(value, fromCard, gameContext, continuation) {
+        const bonus = Led.getBonus();
+        continuation(value - bonus);
+    };
+
+    getDescriptions() {
+        const parentDescriptions = super.getDescriptions();
+        const descriptions = [...parentDescriptions];
+
+        if (Lad.prototype.hasOwnProperty('modifyDealedDamageToCreature') ||
+          Lad.prototype.hasOwnProperty('modifyTakenDamage')) {
+            descriptions.push('Чем их больше, тем они сильнее');
+        }
+
+        return descriptions;
+    }
+}
+
 class Gatling extends Creature{
     constructor() {
         super('Гатлинг',6);
@@ -114,7 +165,7 @@ const seriffStartDeck = [
 ];
 const banditStartDeck = [
     new Trasher(),
-    new Dog(),
+    new Lad(),
     new Dog(),
 ];
 
